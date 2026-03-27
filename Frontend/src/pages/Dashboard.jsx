@@ -1,29 +1,51 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router'
 import './styles/dashboard.css'
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview')
   const [searchQuery, setSearchQuery] = useState('')
+  const [lostCount, setLostCount] = useState(0)
+  const [foundCount, setFoundCount] = useState(0)
+  const [claimedItems, setClaimedItems] = useState([])
+  const [allItems, setAllItems] = useState([])
+  const [userName, setUserName] = useState('Rahul Kumar')
+
+  // Fetch real data from API
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/items')
+        const items = await response.json()
+        
+        setAllItems(items)
+        const lostItems = items.filter(item => item.status === 'LOST').length
+        const foundItems = items.filter(item => item.status === 'FOUND').length
+        
+        setLostCount(lostItems)
+        setFoundCount(foundItems)
+      } catch (error) {
+        console.error('Error fetching items:', error)
+      }
+    }
+
+    fetchData()
+
+    // Load claimed items from localStorage
+    const storedClaims = JSON.parse(localStorage.getItem('claims') || '[]')
+    setClaimedItems(storedClaims)
+
+    // Load user name from localStorage if available
+    const storedUserName = localStorage.getItem('userName')
+    if (storedUserName) {
+      setUserName(storedUserName)
+    }
+  }, [])
 
   const stats = [
-    { label: 'TOTAL LOST', value: '1,284', trend: '↓ 12%', icon: '🔴', color: 'red' },
-    { label: 'TOTAL FOUND', value: '942', trend: '↗ 8%', icon: '📦', color: 'blue' },
-    { label: 'ACTIVE MATCHES', value: '156', trend: '⚡ High Match Rate', icon: '✨', color: 'orange', highlight: true },
-    { label: 'RECOVERED ITEMS', value: '432', trend: '↗ 24%', icon: '✅', color: 'green' },
-  ]
-
-  const recentListings = [
-    { id: 1, name: 'iPhone 13 Pro', description: 'Sierra blue, Clear case', status: 'LOST', date: 'Oct 24, 2023', location: 'Central Station' },
-    { id: 2, name: 'Leather Wallet', description: 'Brown, Fossil brand', status: 'FOUND', date: 'Oct 23, 2023', location: 'Airport Terminal 2' },
-    { id: 3, name: 'Keychain', description: 'Tesla key, Red tag', status: 'FOUND', date: 'Oct 23, 2023', location: 'City Mall Park' },
-    { id: 4, name: 'Laptop Bag', description: 'Dell branding, black nylon', status: 'LOST', date: 'Oct 22, 2023', location: 'Starbucks Downtown' },
-  ]
-
-  const matchAlerts = [
-    { confidence: '98% MATCH CONFIDENCE', item: 'Apple AirPods Pro', description: 'Matching serial number prefix detected in found item #4291', time: '2h ago', action: 'Verify Match' },
-    { confidence: '85% MATCH CONFIDENCE', item: 'Blue Backpack (Eastpak)', description: 'Location proximity (0.2km) and visual color match found.', time: '5h ago', action: 'Review' },
-    { confidence: '72% MATCH CONFIDENCE', item: 'Ray-Ban Sunglasses', description: 'Multiple black frames reported at Central Park area.', time: 'Yesterday', action: 'Review' },
+    { label: 'Active Lost Reports', value: lostCount.toString(), trend: '📍 Open Cases', icon: '🔴', color: 'red' },
+    { label: 'Active Found Reports', value: foundCount.toString(), trend: '📦 Available', icon: '📦', color: 'blue' },
+    { label: 'Successfully Claimed', value: claimedItems.length.toString(), trend: '✅ Returned', icon: '✅', color: 'green', highlight: true },
   ]
 
   return (
@@ -37,7 +59,6 @@ const Dashboard = () => {
               { id: 'overview', label: 'Overview', icon: '📊' },
               { id: 'lost', label: 'Lost Items', icon: '🔴' },
               { id: 'found', label: 'Found Items', icon: '📦' },
-              { id: 'matches', label: 'Matches', icon: '🔗', badge: true },
             ].map(item => (
               <button
                 key={item.id}
@@ -50,63 +71,17 @@ const Dashboard = () => {
               </button>
             ))}
           </div>
-
-          <div className="nav-section">
-            <div className="nav-label">SYSTEM</div>
-            {[
-              { id: 'users', label: 'Users', icon: '👥' },
-              { id: 'settings', label: 'Settings', icon: '⚙️' },
-            ].map(item => (
-              <button
-                key={item.id}
-                className={`nav-item ${activeTab === item.id ? 'active' : ''}`}
-                onClick={() => setActiveTab(item.id)}
-              >
-                <span className="nav-icon">{item.icon}</span>
-                <span>{item.label}</span>
-              </button>
-            ))}
-          </div>
         </nav>
-
-        <div className="sidebar-user">
-          <div className="user-avatar">👤</div>
-          <div className="user-info">
-            <div className="user-name">Alex Rivera</div>
-            <div className="user-role">Administrator</div>
-          </div>
-        </div>
       </aside>
 
       {/* Main Content */}
       <main className="dashboard-main">
-        {/* Top Bar */}
-        <div className="dashboard-top">
-          <div className="search-bar">
-            <span className="search-icon">🔍</span>
-            <input
-              type="text"
-              placeholder="Search items, locations, or claim IDs..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <div className="top-actions">
-            <button className="icon-btn" title="Notifications">🔔</button>
-            <button className="icon-btn" title="Help">❓</button>
-            <button className="btn-new-entry">+ New Entry</button>
-          </div>
-        </div>
+  
 
-        {/* Page Header */}
         <div className="page-header">
           <div>
             <h1>Dashboard Overview</h1>
-            <p className="page-subtitle">Welcome back, Alex. Here's a summary of the latest tracker activity.</p>
-          </div>
-          <div className="header-actions">
-            <button className="btn-secondary">📅 Last 30 Days</button>
-            <button className="btn-secondary">⬇️ Export Data</button>
+            <p className="page-subtitle">Welcome back, {userName}. Here's what's happening with your items.</p>
           </div>
         </div>
 
@@ -124,84 +99,164 @@ const Dashboard = () => {
           ))}
         </div>
 
-        {/* Content Grid */}
+        {/* Content Grid - Dynamic based on tab */}
         <div className="content-grid">
-          {/* Recent Listings */}
-          <div className="recent-listings">
-            <div className="section-header">
-              <h2>Recent Listings</h2>
-              <a href="#" className="view-all">View All</a>
-            </div>
-            <table className="listings-table">
-              <thead>
-                <tr>
-                  <th>ITEM DETAILS</th>
-                  <th>STATUS</th>
-                  <th>DATE</th>
-                  <th>LOCATION</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentListings.map((listing) => (
-                  <tr key={listing.id}>
-                    <td>
-                      <div className="item-cell">
-                        <span className="item-icon">📋</span>
-                        <div>
-                          <div className="item-name">{listing.name}</div>
-                          <div className="item-description">{listing.description}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <span className={`status-badge ${listing.status.toLowerCase()}`}>
-                        {listing.status}
-                      </span>
-                    </td>
-                    <td className="date-cell">{listing.date}</td>
-                    <td className="location-cell">📍 {listing.location}</td>
-                    <td>
-                      <button className="btn-menu">⋮</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Match Alerts */}
-          <div className="match-alerts">
-            <div className="section-header">
-              <h2>Match Alerts</h2>
-              <span className="badge-new">🆕 New</span>
-            </div>
-            <div className="alerts-list">
-              {matchAlerts.map((alert, idx) => (
-                <div key={idx} className="alert-item">
-                  <div className="alert-confidence">{alert.confidence}</div>
-                  <h3 className="alert-title">{alert.item}</h3>
-                  <p className="alert-description">{alert.description}</p>
-                  <div className="alert-time">{alert.time}</div>
-                  <button className="btn-alert-action">{alert.action}</button>
+          {activeTab === 'overview' && (
+            <div className="recent-listings">
+              <div className="section-header">
+                <h2>Claimed Items</h2>
+                <Link to="/recent-items" className="view-all">View All Items</Link>
+              </div>
+              {claimedItems.length > 0 ? (
+                <table className="listings-table">
+                  <thead>
+                    <tr>
+                      <th>ITEM DETAILS</th>
+                      <th>STATUS</th>
+                      <th>CLAIMED DATE</th>
+                      <th>USER CONTACT</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {claimedItems.map((claim) => (
+                      <tr key={claim.itemId}>
+                        <td>
+                          <div className="item-cell">
+                            <span className="item-icon">📦</span>
+                            <div>
+                              <div className="item-name">{claim.itemTitle}</div>
+                              <div className="item-description">Claim ID: {claim.itemId}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <span className={`status-badge ${claim.itemStatus.toLowerCase()}`}>
+                            {claim.itemStatus}
+                          </span>
+                        </td>
+                        <td className="date-cell">{claim.claimTime}</td>
+                        <td className="location-cell">
+                          {claim.userEmail && <div>📧 {claim.userEmail}</div>}
+                          {claim.userPhone && <div>📱 {claim.userPhone}</div>}
+                        </td>
+                        <td>
+                          <button className="btn-menu">⋮</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className="empty-state">
+                  <p className="empty-icon">📭</p>
+                  <p className="empty-text">No claimed items yet. Visit <Link to="/recent-items">Recent Items</Link> to claim found items.</p>
                 </div>
-              ))}
+              )}
             </div>
-          </div>
-        </div>
+          )}
 
-        {/* Activity Trends */}
-        <div className="activity-trends">
-          <div className="section-header">
-            <h2>Activity Trends</h2>
-            <div className="legend">
-              <span className="legend-item"><span className="dot red"></span> Lost Items</span>
-              <span className="legend-item"><span className="dot blue"></span> Found Items</span>
+          {activeTab === 'lost' && (
+            <div className="recent-listings">
+              <div className="section-header">
+                <h2>Lost Items</h2>
+              </div>
+              {allItems.filter(item => item.status === 'LOST').length > 0 ? (
+                <table className="listings-table">
+                  <thead>
+                    <tr>
+                      <th>ITEM DETAILS</th>
+                      <th>LOCATION</th>
+                      <th>DATE REPORTED</th>
+                      <th>REPORTER CONTACT</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {allItems.filter(item => item.status === 'LOST').map((item) => (
+                      <tr key={item.id}>
+                        <td>
+                          <div className="item-cell">
+                            <span className="item-icon">🔴</span>
+                            <div>
+                              <div className="item-name">{item.title}</div>
+                              <div className="item-description">{item.description}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="location-cell">📍 {item.location}</td>
+                        <td className="date-cell">{new Date(item.reportedDate).toLocaleDateString()}</td>
+                        <td className="location-cell">
+                          {item.contactInfo && <div>📧/📱 {item.contactInfo}</div>}
+                        </td>
+                        <td>
+                          <button className="btn-menu">⋮</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className="empty-state">
+                  <p className="empty-icon">✅</p>
+                  <p className="empty-text">No lost items reported. Great!</p>
+                </div>
+              )}
             </div>
-          </div>
-          <div className="chart-placeholder">
-            📊 Activity chart will be rendered here
-          </div>
+          )}
+
+          {activeTab === 'found' && (
+            <div className="recent-listings">
+              <div className="section-header">
+                <h2>Found Items</h2>
+              </div>
+              {allItems.filter(item => item.status === 'FOUND').length > 0 ? (
+                <table className="listings-table">
+                  <thead>
+                    <tr>
+                      <th>ITEM DETAILS</th>
+                      <th>LOCATION</th>
+                      <th>DATE FOUND</th>
+                      <th>FINDER CONTACT</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {allItems.filter(item => item.status === 'FOUND').map((item) => (
+                      <tr key={item.id}>
+                        <td>
+                          <div className="item-cell">
+                            <span className="item-icon">📦</span>
+                            <div>
+                              <div className="item-name">{item.title}</div>
+                              <div className="item-description">{item.description}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="location-cell">📍 {item.location}</td>
+                        <td className="date-cell">{new Date(item.reportedDate).toLocaleDateString()}</td>
+                        <td className="location-cell contact-info">
+                          {item.contactInfo && (
+                            <>
+                              <div>📧/📱 {item.contactInfo}</div>
+                            </>
+                          )}
+                        </td>
+                        <td>
+                          <button className="btn-menu">⋮</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className="empty-state">
+                  <p className="empty-icon">📭</p>
+                  <p className="empty-text">No found items reported yet.</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </main>
     </div>

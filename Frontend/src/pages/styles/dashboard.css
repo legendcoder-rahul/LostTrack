@@ -546,6 +546,16 @@
   font-size: 13px;
 }
 
+.location-cell.contact-info {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.location-cell.contact-info div {
+  margin: 4px 0;
+  font-family: monospace;
+}
+
 .btn-menu {
   background: none;
   border: none;
@@ -558,6 +568,35 @@
 
 .btn-menu:hover {
   color: var(--text-dark);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-light);
+}
+
+.empty-icon {
+  font-size: 64px;
+  display: block;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+.empty-text {
+  font-size: 16px;
+  margin: 0;
+}
+
+.empty-text a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.empty-text a:hover {
+  text-decoration: underline;
 }
 
 /* Match Alerts */

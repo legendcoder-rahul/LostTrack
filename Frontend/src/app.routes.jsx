@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router'
 import Home from './pages/Home'
+import HowItWorks from './pages/HowItWorks'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Dashboard from './pages/Dashboard'
@@ -8,6 +9,8 @@ import Login from './features/auth/pages/Login'
 import Register from './features/auth/pages/Register'
 import ReportItem from './pages/ReportItem'
 import FoundItem from './pages/FoundItem'
+import RecentItems from './pages/RecentItems'
+import { ProtectedRoute } from './components/ProtectedRoute'
 
 const router = createBrowserRouter([
   {
@@ -21,32 +24,48 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: '/how-it-works',
+    element: (
+      <>
+        <Navbar />
+        <HowItWorks />
+        <Footer />
+      </>
+    ),
+  },
+  {
     path: '/dashboard',
     element: (
-    <>
-    <Navbar/>
-    <Dashboard />
-    </>
+      <ProtectedRoute>
+        <>
+          <Navbar />
+          <Dashboard />
+        </>
+      </ProtectedRoute>
     ),
   },
   {
     path: '/report',
     element: (
-      <>
-        <Navbar />
-        <ReportItem />
-        <Footer />
-      </>
+      <ProtectedRoute>
+        <>
+          <Navbar />
+          <ReportItem />
+          <Footer />
+        </>
+      </ProtectedRoute>
     ),
   },
   {
     path: '/found',
     element: (
-      <>
-        <Navbar />
-        <FoundItem />
-        <Footer />
-      </>
+      <ProtectedRoute>
+        <>
+          <Navbar />
+          <FoundItem />
+          <Footer />
+        </>
+      </ProtectedRoute>
     ),
   },
   {
@@ -60,6 +79,16 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: '/recent',
+    element: (
+      <>
+        <Navbar />
+        <RecentItems />
+        <Footer />
+      </>
+    ),
+  },
+  {
     path: '/login',
     element: (
       <>
@@ -68,7 +97,7 @@ const router = createBrowserRouter([
       </>
     )
   },
-   {
+  {
     path: '/register',
     element: (
       <>

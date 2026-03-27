@@ -318,6 +318,10 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 [data-theme="dark"] .btn-social {
@@ -341,12 +345,16 @@
 }
 
 .btn-social.google::before {
-  content: '🔍';
   margin-right: 6px;
 }
 
 .btn-social.sso::before {
   content: '';
+}
+
+.googleIcon{
+  height: 22px;
+  
 }
 
 /* Auth Footer */

@@ -1,0 +1,52 @@
+# Compiled class files
+*.class
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+.flattened-pom.xml
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+*.iml
+*.iws
+*.ipr
+
+# Spring Boot
+.springBeans
+.history
+.recommenders/
+
+# Environment
+.env
+.env.local
+.env.*.local
+application-prod.properties
+
+# Logs
+*.log
+logs/
+backend.log
+
+# Java
+.classpath
+.project
+.settings/
+
+# Build
+build/
+.gradle/
+
+# Test
+**/test-results/
+**/surefire-reports/
