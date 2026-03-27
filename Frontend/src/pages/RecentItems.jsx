@@ -1,31 +1,30 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import './styles/recent-items.css'
+import ClaimItemModal from '../components/ClaimItemModal'
+import itemsAPI from '../services/itemsAPI'
+import { AuthContext } from '../context/AuthContext'
 
 const RecentItems = () => {
+  const { user } = useContext(AuthContext)
   const [filter, setFilter] = useState('all')
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [selectedItemForClaim, setSelectedItemForClaim] = useState(null)
+  const [isClaimModalOpen, setIsClaimModalOpen] = useState(false)
 
   useEffect(() => {
     fetchItems()
   }, [filter])
 
-  const handleClaim = (item) => {
-    // Store claimed item with user details
-    const claims = JSON.parse(localStorage.getItem('claims') || '[]')
-    const newClaim = {
-      itemId: item.id,
-      itemTitle: item.title,
-      itemStatus: item.status,
-      claimTime: new Date().toLocaleString(),
-      userName: 'You', // Can be updated with actual user info later
-      userPhone: localStorage.getItem('userPhone') || 'Not provided',
-      userEmail: localStorage.getItem('userEmail') || 'Not provided'
-    }
-    claims.push(newClaim)
-    localStorage.setItem('claims', JSON.stringify(claims))
-    alert(`✅ You've claimed "${item.title}"! Check your Dashboard to manage this claim.`)
+  const handleClaimClick = (item) => {
+    setSelectedItemForClaim(item)
+    setIsClaimModalOpen(true)
+  }
+
+  const handleClaimSuccess = () => {
+    // Refresh items after successful claim
+    fetchItems()
   }
 
   const handleContactFinder = (item) => {
@@ -37,29 +36,27 @@ const RecentItems = () => {
       setLoading(true)
       setError(null)
       
-      let url = '/api/items'
-      if (filter !== 'all') {
-        url = `/api/items/status/${filter}`
+      let data
+      if (filter === 'all') {
+        data = await itemsAPI.getAllItems()
+      } else if (filter === 'found') {
+        data = await itemsAPI.getItemsByStatus('FOUND')
+      } else if (filter === 'lost') {
+        data = await itemsAPI.getItemsByStatus('LOST')
       }
-      
-      const response = await fetch(url)
-      
-      if (!response.ok) {
-        throw new Error(`Failed to fetch items: ${response.statusText}`)
-      }
-      
-      const data = await response.json()
       
       // Transform backend data to match frontend format
       const transformedItems = data.map(item => ({
         id: item.id,
         title: item.title,
-        image: item.imageData || 'https://via.placeholder.com/300x300?text=' + encodeURIComponent(item.title),
+        imageData: item.imageData,
         location: item.location,
         time: formatTime(item.createdAt),
-        status: item.status.toLowerCase(),
+        status: item.status,
         description: item.description,
-        contact: item.contactInfo
+        contact: item.contactInfo,
+        claimantId: item.claimantId,
+        ownerId: item.ownerId
       }))
       
       setItems(transformedItems)
@@ -87,9 +84,68 @@ const RecentItems = () => {
     return date.toLocaleDateString()
   }
 
+  const getActionButton = (item) => {
+    const isOwnItem = user && user.id && item.ownerId === user.id
+    
+    switch (item.status) {
+      case 'FOUND':
+        return (
+          <>
+            <button 
+              className="claim-btn"
+              onClick={() => handleClaimClick(item)}
+              disabled={isOwnItem}
+              title={isOwnItem ? "You cannot claim your own item" : ""}
+            >
+              🏷️ Claim Item
+            </button>
+            {isOwnItem && <p style={{fontSize: '12px', color: '#f57c00', marginTop: '8px'}}>📌 You posted this item</p>}
+          </>
+        )
+      case 'CLAIM_REQUESTED':
+        return (
+          <button 
+            className="claim-btn disabled"
+            disabled
+          >
+            ⏳ Claim Requested
+          </button>
+        )
+      case 'OTP_PENDING':
+        return (
+          <button 
+            className="claim-btn disabled"
+            disabled
+          >
+            🔐 OTP Pending
+          </button>
+        )
+      case 'COMPLETED':
+        return (
+          <button 
+            className="claim-btn completed"
+            disabled
+          >
+            ✅ Claim Completed
+          </button>
+        )
+      case 'LOST':
+        return (
+          <button 
+            className="contact-btn"
+            onClick={() => handleContactFinder(item)}
+          >
+            📞 Contact Finder
+          </button>
+        )
+      default:
+        return null
+    }
+  }
+
   const filteredItems = items
-  const itemsWithImages = items.filter(item => item.image && !item.image.includes('placeholder'))
-  const itemsWithoutImages = items.filter(item => !item.image || item.image.includes('placeholder'))
+  const itemsWithImages = items.filter(item => item.imageData)
+  const itemsWithoutImages = items.filter(item => !item.imageData)
 
   const renderItemsGrid = (itemsList, title, showImage = true) => (
     <>
@@ -101,17 +157,17 @@ const RecentItems = () => {
               <div key={item.id} className="item-card">
                 {showImage && (
                   <div className="item-image-wrapper">
-                    <img src={item.image} alt={item.title} className="item-image" />
-                    <span className={`item-status ${item.status}`}>
-                      {item.status.toUpperCase()}
+                    <img src={item.imageData} alt={item.title} className="item-image" />
+                    <span className={`item-status ${item.status.toLowerCase()}`}>
+                      {item.status.replace('_', ' ')}
                     </span>
                   </div>
                 )}
                 
                 {!showImage && (
                   <div className="item-no-image">
-                    <span className={`item-status ${item.status}`}>
-                      {item.status.toUpperCase()}
+                    <span className={`item-status ${item.status.toLowerCase()}`}>
+                      {item.status.replace('_', ' ')}
                     </span>
                     <div className="no-image-icon">📝</div>
                   </div>
@@ -130,21 +186,7 @@ const RecentItems = () => {
                     <span className="info-text">{item.time}</span>
                   </div>
                   
-                  {item.status === 'lost' ? (
-                    <button 
-                      className="contact-btn"
-                      onClick={() => handleContactFinder(item)}
-                    >
-                      📞 Contact Finder
-                    </button>
-                  ) : (
-                    <button 
-                      className="claim-btn"
-                      onClick={() => handleClaim(item)}
-                    >
-                      Claim Item
-                    </button>
-                  )}
+                  {getActionButton(item)}
                 </div>
               </div>
             ))}
@@ -202,8 +244,21 @@ const RecentItems = () => {
 
       {/* Load More */}
       <div className="load-more-container">
-        <button className="load-more-btn" onClick={fetchItems}>Load More Discoveries</button>
+        <button className="load-more-btn" onClick={fetchItems}>Refresh Items</button>
       </div>
+
+      {/* Claim Item Modal */}
+      {selectedItemForClaim && (
+        <ClaimItemModal
+          item={selectedItemForClaim}
+          isOpen={isClaimModalOpen}
+          onClose={() => {
+            setIsClaimModalOpen(false)
+            setSelectedItemForClaim(null)
+          }}
+          onSuccess={handleClaimSuccess}
+        />
+      )}
     </div>
   )
 }

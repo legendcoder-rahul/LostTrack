@@ -6,6 +6,7 @@ import com.lostfound.entity.ItemStatus;
 import com.lostfound.entity.User;
 import com.lostfound.repository.ItemRepository;
 import com.lostfound.repository.UserRepository;
+import com.lostfound.util.OTPUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,9 @@ public class ItemService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private NotificationService notificationService;
 
     public ItemDTO createItem(ItemDTO itemDTO, Long userId) {
         // Validate required fields
@@ -118,7 +122,7 @@ public class ItemService {
     }
 
     private ItemDTO convertToDTO(Item item) {
-        return new ItemDTO(
+        ItemDTO dto = new ItemDTO(
                 item.getId(),
                 item.getTitle(),
                 item.getDescription(),
@@ -129,5 +133,278 @@ public class ItemService {
                 item.getCreatedAt(),
                 item.getContactInfo()
         );
+        
+        // Add owner info
+        if (item.getUser() != null) {
+            dto.setOwnerId(item.getUser().getId());
+            dto.setOwnerName(item.getUser().getName());
+        }
+        
+        // Add claim info
+        dto.setClaimantId(item.getClaimantId());
+        dto.setOtpExpiry(item.getOtpExpiry());
+        dto.setOtpAttemptCount(item.getOtpAttemptCount());
+        dto.setClaimApprovedDate(item.getClaimApprovedDate());
+        
+        return dto;
+    }
+
+    // ==================== CLAIM VERIFICATION METHODS ====================
+
+    /**
+     * User claims an item
+     * Changes status from FOUND to CLAIM_REQUESTED
+     */
+    public ItemDTO claimItem(Long itemId, Long claimantId) {
+        Optional<Item> itemOpt = itemRepository.findById(itemId);
+        if (itemOpt.isEmpty()) {
+            throw new RuntimeException("Item not found");
+        }
+
+        Item item = itemOpt.get();
+        
+        // Verify item owner is not claiming their own item
+        if (item.getUser().getId().equals(claimantId)) {
+            throw new RuntimeException("Cannot claim your own item");
+        }
+
+        // Verify item is in FOUND status
+        if (!item.getStatus().equals(ItemStatus.FOUND)) {
+            throw new RuntimeException("Item is not available for claim. Current status: " + item.getStatus());
+        }
+
+        // Update item status and set claimant
+        item.setStatus(ItemStatus.CLAIM_REQUESTED);
+        item.setClaimantId(claimantId);
+        item.setOtpAttemptCount(0);
+        
+        Item updated = itemRepository.save(item);
+        
+        // Send notification to owner
+        notificationService.sendClaimRequestNotification(
+                item.getUser().getEmail(),
+                userRepository.findById(claimantId).get().getName(),
+                item.getTitle()
+        );
+        
+        return convertToDTO(updated);
+    }
+
+    /**
+     * Get claim requests for an item owner
+     * Returns all items with status CLAIM_REQUESTED
+     */
+    public List<ItemDTO> getClaimRequestsForOwner(Long ownerId) {
+        return itemRepository.findByStatusAndUserIdOrderByCreatedAtDesc(ItemStatus.CLAIM_REQUESTED, ownerId)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Owner approves claim request
+     * Generates OTP and sends it to owner
+     */
+    public ItemDTO approveClaim(Long itemId, Long ownerId) {
+        Optional<Item> itemOpt = itemRepository.findById(itemId);
+        if (itemOpt.isEmpty()) {
+            throw new RuntimeException("Item not found");
+        }
+
+        Item item = itemOpt.get();
+        
+        // Verify item owner
+        if (!item.getUser().getId().equals(ownerId)) {
+            throw new RuntimeException("Only item owner can approve claims");
+        }
+
+        // Verify item is in CLAIM_REQUESTED status
+        if (!item.getStatus().equals(ItemStatus.CLAIM_REQUESTED)) {
+            throw new RuntimeException("Claim is not pending approval");
+        }
+
+        // Generate OTP
+        String otp = OTPUtil.generateOTP();
+        String hashedOTP = OTPUtil.hashOTP(otp);
+        
+        // Set OTP expiry (5 minutes from now)
+        LocalDateTime otpExpiry = LocalDateTime.now().plusMinutes(5);
+        
+        // Update item
+        item.setStatus(ItemStatus.OTP_PENDING);
+        item.setOtp(hashedOTP);
+        item.setOtpExpiry(otpExpiry);
+        item.setOtpAttemptCount(0);
+        item.setClaimApprovedDate(LocalDateTime.now());
+        
+        Item updated = itemRepository.save(item);
+        
+        // Send OTP to owner
+        notificationService.sendOTPNotification(
+                item.getUser().getEmail(),
+                item.getUser().getPhone(),
+                otp
+        );
+        
+        // Notify claimant
+        Optional<User> claimantOpt = userRepository.findById(item.getClaimantId());
+        if (claimantOpt.isPresent()) {
+            notificationService.sendClaimApprovedNotification(
+                    claimantOpt.get().getEmail(),
+                    item.getTitle()
+            );
+        }
+        
+        return convertToDTO(updated);
+    }
+
+    /**
+     * Owner rejects claim request
+     * Resets status back to FOUND for other users to claim
+     */
+    public ItemDTO rejectClaim(Long itemId, Long ownerId) {
+        Optional<Item> itemOpt = itemRepository.findById(itemId);
+        if (itemOpt.isEmpty()) {
+            throw new RuntimeException("Item not found");
+        }
+
+        Item item = itemOpt.get();
+        
+        // Verify item owner
+        if (!item.getUser().getId().equals(ownerId)) {
+            throw new RuntimeException("Only item owner can reject claims");
+        }
+
+        // Verify item is in CLAIM_REQUESTED or OTP_PENDING status
+        if (!item.getStatus().equals(ItemStatus.CLAIM_REQUESTED) && 
+            !item.getStatus().equals(ItemStatus.OTP_PENDING)) {
+            throw new RuntimeException("Cannot reject claim at this status");
+        }
+
+        // Get claimant info before resetting
+        Long claimantId = item.getClaimantId();
+        
+        // Reset item
+        item.setStatus(ItemStatus.FOUND);
+        item.setClaimantId(null);
+        item.setOtp(null);
+        item.setOtpExpiry(null);
+        item.setOtpAttemptCount(0);
+        item.setClaimApprovedDate(null);
+        
+        Item updated = itemRepository.save(item);
+        
+        // Notify claimant
+        if (claimantId != null) {
+            Optional<User> claimantOpt = userRepository.findById(claimantId);
+            if (claimantOpt.isPresent()) {
+                notificationService.sendClaimRejectedNotification(
+                        claimantOpt.get().getEmail(),
+                        item.getTitle()
+                );
+            }
+        }
+        
+        return convertToDTO(updated);
+    }
+
+    /**
+     * Claimant verifies OTP and completes the claim
+     */
+    public ItemDTO verifyOTP(Long itemId, Long claimantId, String providedOTP) {
+        Optional<Item> itemOpt = itemRepository.findById(itemId);
+        if (itemOpt.isEmpty()) {
+            throw new RuntimeException("Item not found");
+        }
+
+        Item item = itemOpt.get();
+        
+        // Verify claimant
+        if (!item.getClaimantId().equals(claimantId)) {
+            throw new RuntimeException("Only the claimant can verify OTP");
+        }
+
+        // Verify status
+        if (!item.getStatus().equals(ItemStatus.OTP_PENDING)) {
+            throw new RuntimeException("OTP verification is not pending for this item");
+        }
+
+        // Check OTP expiry
+        if (LocalDateTime.now().isAfter(item.getOtpExpiry())) {
+            throw new RuntimeException("OTP has expired");
+        }
+
+        // Check attempt count
+        int attempts = item.getOtpAttemptCount();
+        if (attempts >= 3) {
+            // Reset to FOUND after 3 failed attempts
+            item.setStatus(ItemStatus.FOUND);
+            item.setClaimantId(null);
+            item.setOtp(null);
+            item.setOtpExpiry(null);
+            item.setOtpAttemptCount(0);
+            item.setClaimApprovedDate(null);
+            itemRepository.save(item);
+            throw new RuntimeException("Maximum OTP attempts exceeded. Claim has been cancelled.");
+        }
+
+        // Verify OTP
+        if (!OTPUtil.verifyOTP(providedOTP, item.getOtp())) {
+            item.setOtpAttemptCount(attempts + 1);
+            itemRepository.save(item);
+            int remainingAttempts = 3 - (attempts + 1);
+            throw new RuntimeException("Invalid OTP. Remaining attempts: " + remainingAttempts);
+        }
+
+        // OTP verified successfully
+        item.setStatus(ItemStatus.COMPLETED);
+        item.setOtp(null); // Clear OTP after successful verification
+        item.setOtpExpiry(null);
+        item.setOtpAttemptCount(0);
+        
+        Item updated = itemRepository.save(item);
+        
+        // Send notifications
+        Optional<User> claimantOpt = userRepository.findById(claimantId);
+        if (claimantOpt.isPresent()) {
+            notificationService.sendItemReturnedNotification(
+                    claimantOpt.get().getEmail(),
+                    item.getTitle()
+            );
+        }
+        
+        notificationService.sendItemHandoverNotification(
+                item.getUser().getEmail(),
+                item.getTitle(),
+                claimantOpt.map(User::getName).orElse("Unknown")
+        );
+        
+        return convertToDTO(updated);
+    }
+
+    /**
+     * Get claim history for a claimant
+     */
+    public List<ItemDTO> getMyClaimHistory(Long claimantId) {
+        List<ItemDTO> claimedItems = itemRepository.findByClaimantIdAndStatusOrderByCreatedAtDesc(claimantId, ItemStatus.COMPLETED)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+        
+        // Also include pending claims
+        List<ItemDTO> pendingClaims = itemRepository.findByClaimantIdAndStatusOrderByCreatedAtDesc(claimantId, ItemStatus.CLAIM_REQUESTED)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+        
+        List<ItemDTO> otpPendingClaims = itemRepository.findByClaimantIdAndStatusOrderByCreatedAtDesc(claimantId, ItemStatus.OTP_PENDING)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+        
+        claimedItems.addAll(pendingClaims);
+        claimedItems.addAll(otpPendingClaims);
+        
+        return claimedItems;
     }
 }

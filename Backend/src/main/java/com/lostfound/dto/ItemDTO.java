@@ -18,6 +18,20 @@ public class ItemDTO {
     private LocalDateTime createdAt;
     private String contactInfo;
 
+    // Claim verification fields
+    private Long ownerId; // ID of the person who found the item
+    private String ownerName;
+    private Long claimantId; // ID of the person claiming the item
+    private String claimantName;
+    
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
+    private LocalDateTime otpExpiry;
+    
+    private Integer otpAttemptCount;
+    
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
+    private LocalDateTime claimApprovedDate;
+
     public ItemDTO() {
     }
 
@@ -103,5 +117,61 @@ public class ItemDTO {
 
     public void setContactInfo(String contactInfo) {
         this.contactInfo = contactInfo;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public Long getClaimantId() {
+        return claimantId;
+    }
+
+    public void setClaimantId(Long claimantId) {
+        this.claimantId = claimantId;
+    }
+
+    public String getClaimantName() {
+        return claimantName;
+    }
+
+    public void setClaimantName(String claimantName) {
+        this.claimantName = claimantName;
+    }
+
+    public LocalDateTime getOtpExpiry() {
+        return otpExpiry;
+    }
+
+    public void setOtpExpiry(LocalDateTime otpExpiry) {
+        this.otpExpiry = otpExpiry;
+    }
+
+    public Integer getOtpAttemptCount() {
+        return otpAttemptCount;
+    }
+
+    public void setOtpAttemptCount(Integer otpAttemptCount) {
+        this.otpAttemptCount = otpAttemptCount;
+    }
+
+    public LocalDateTime getClaimApprovedDate() {
+        return claimApprovedDate;
+    }
+
+    public void setClaimApprovedDate(LocalDateTime claimApprovedDate) {
+        this.claimApprovedDate = claimApprovedDate;
     }
 }

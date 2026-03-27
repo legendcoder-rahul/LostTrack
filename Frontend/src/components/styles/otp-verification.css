@@ -1,0 +1,221 @@
+/* OTP Verification Modal Styles */
+.otp-modal {
+  max-width: 500px;
+}
+
+.otp-info {
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #f0f8ff;
+  border-left: 4px solid #1976d2;
+  border-radius: 4px;
+}
+
+[data-theme="dark"] .otp-info {
+  background-color: #1a2a3a;
+  border-left-color: #4a9eff;
+}
+
+.otp-info h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+[data-theme="dark"] .otp-info h3 {
+  color: #fff;
+}
+
+.otp-description {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+}
+
+[data-theme="dark"] .otp-description {
+  color: #aaa;
+}
+
+.otp-timer {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.timer-label {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+[data-theme="dark"] .timer-label {
+  background-color: #1a3a2a;
+  color: #4caf50;
+}
+
+.timer-label.expired {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+[data-theme="dark"] .timer-label.expired {
+  background-color: #3d2424;
+  color: #ff6b6b;
+}
+
+.otp-input-container {
+  margin-bottom: 24px;
+}
+
+.otp-inputs {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.otp-input {
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  text-align: center;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+[data-theme="dark"] .otp-input {
+  background-color: #252a3a;
+  color: #fff;
+  border-color: #404050;
+}
+
+.otp-input:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+[data-theme="dark"] .otp-input:focus {
+  border-color: #4a9eff;
+  box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.1);
+}
+
+.otp-input:disabled {
+  background-color: #f5f5f5;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+[data-theme="dark"] .otp-input:disabled {
+  background-color: #1a1f2e;
+  color: #555;
+}
+
+.otp-attempts {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 12px;
+  background-color: #fff3e0;
+  border-radius: 4px;
+}
+
+[data-theme="dark"] .otp-attempts {
+  background-color: #3a2a1a;
+}
+
+.otp-attempts p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+[data-theme="dark"] .otp-attempts p {
+  color: #aaa;
+}
+
+.otp-attempts span {
+  font-weight: 600;
+  color: #f57c00;
+}
+
+[data-theme="dark"] .otp-attempts span {
+  color: #ff9800;
+}
+
+[data-theme="dark"] .otp-notes {
+  background-color: #252a3a;
+}
+
+.otp-notes h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+[data-theme="dark"] .otp-notes h4 {
+  color: #fff;
+}
+
+.otp-notes ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #555;
+  font-size: 13px;
+}
+
+[data-theme="dark"] .otp-notes ul {
+  color: #aaa;
+}
+
+.otp-notes li {
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.otp-attempts span {
+  font-weight: 600;
+  color: #f57c00;
+}
+
+[data-theme="dark"] .otp-attempts span {
+  color: #ff9800;
+}
+
+.otp-attempts span.critical {
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+[data-theme="dark"] .otp-attempts span.critical {
+  color: #ff6b6b;
+}
+
+/* Error message styling from claim modal is reused */
+.error-message {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .otp-inputs {
+    gap: 8px;
+  }
+
+  .otp-input {
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+  }
+}

@@ -32,6 +32,10 @@
   border-bottom: 1px solid var(--border-color);
 }
 
+[data-theme="dark"] .sidebar-header {
+  border-bottom-color: #333;
+}
+
 .sidebar-logo {
   display: flex;
   align-items: center;
@@ -52,6 +56,10 @@
   font-size: 16px;
   font-weight: 700;
   color: var(--text-dark);
+}
+
+[data-theme="dark"] .logo-title {
+  color: #fff;
 }
 
 .logo-subtitle {
@@ -97,6 +105,10 @@
   text-align: left;
 }
 
+[data-theme="dark"] .nav-item {
+  color: #aaa;
+}
+
 .nav-item:hover {
   background: rgba(255, 107, 53, 0.1);
   color: #ff6b35;
@@ -131,6 +143,10 @@
   gap: 12px;
 }
 
+[data-theme="dark"] .sidebar-user {
+  border-top-color: #333;
+}
+
 .user-avatar {
   width: 40px;
   height: 40px;
@@ -148,7 +164,11 @@
   min-width: 0;
 }
 
-.user-name {
+.
+
+[data-theme="dark"] .user-name {
+  color: #fff;
+}user-name {
   font-size: 14px;
   font-weight: 600;
   color: var(--text-dark);
@@ -278,7 +298,11 @@
   padding: 32px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+ 
+
+[data-theme="dark"] .page-header h1 {
+  color: #fff;
+} align-items: flex-start;
 }
 
 .page-header h1 {
@@ -436,6 +460,11 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
+}
+
+[data-theme="dark"] .section-header h2 {
+  color: #fff;
+}
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -458,6 +487,10 @@
   transition: color 0.3s ease;
 }
 
+[data-theme="dark"] .listings-table thead {
+  border-bottom-color: #333;
+}
+
 .view-all:hover {
   color: #f7931e;
 }
@@ -467,7 +500,11 @@
   border-collapse: collapse;
 }
 
-.listings-table thead {
+.
+
+[data-theme="dark"] .listings-table tbody tr {
+  border-bottom-color: #333;
+}listings-table thead {
   border-bottom: 2px solid var(--border-color);
 }
 
@@ -481,7 +518,11 @@
   letter-spacing: 0.5px;
 }
 
-.listings-table tbody tr {
+.
+
+[data-theme="dark"] .listings-table td {
+  color: #aaa;
+}listings-table tbody tr {
   border-bottom: 1px solid var(--border-color);
   transition: background-color 0.3s ease;
 }
@@ -496,7 +537,11 @@
 
 .listings-table td {
   padding: 16px 8px;
-  font-size: 14px;
+ 
+
+[data-theme="dark"] .item-name {
+  color: #fff;
+} font-size: 14px;
   color: var(--text-dark);
 }
 
@@ -550,8 +595,16 @@
   white-space: pre-wrap;
   word-break: break-word;
 }
+[data-theme="dark"] .btn-menu {
+  color: #666;
+}
 
-.location-cell.contact-info div {
+.btn-menu:hover {
+  color: var(--text-dark);
+}
+
+[data-theme="dark"] .btn-menu:hover {
+  color: #ffffo div {
   margin: 4px 0;
   font-family: monospace;
 }

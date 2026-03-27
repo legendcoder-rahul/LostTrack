@@ -42,6 +42,22 @@ public class Item {
     @Column(nullable = false)
     private String contactInfo;
 
+    // Claim verification fields
+    @Column(name = "claimant_id")
+    private Long claimantId;
+
+    @Column(name = "otp")
+    private String otp; // Hashed OTP
+
+    @Column(name = "otp_expiry")
+    private LocalDateTime otpExpiry;
+
+    @Column(name = "otp_attempt_count", nullable = false)
+    private Integer otpAttemptCount = 0;
+
+    @Column(name = "claim_approved_date")
+    private LocalDateTime claimApprovedDate;
+
     // Constructors
     public Item() {
         this.createdAt = LocalDateTime.now();
@@ -147,6 +163,46 @@ public class Item {
 
     public void setContactInfo(String contactInfo) {
         this.contactInfo = contactInfo;
+    }
+
+    public Long getClaimantId() {
+        return claimantId;
+    }
+
+    public void setClaimantId(Long claimantId) {
+        this.claimantId = claimantId;
+    }
+
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
+
+    public LocalDateTime getOtpExpiry() {
+        return otpExpiry;
+    }
+
+    public void setOtpExpiry(LocalDateTime otpExpiry) {
+        this.otpExpiry = otpExpiry;
+    }
+
+    public Integer getOtpAttemptCount() {
+        return otpAttemptCount;
+    }
+
+    public void setOtpAttemptCount(Integer otpAttemptCount) {
+        this.otpAttemptCount = otpAttemptCount;
+    }
+
+    public LocalDateTime getClaimApprovedDate() {
+        return claimApprovedDate;
+    }
+
+    public void setClaimApprovedDate(LocalDateTime claimApprovedDate) {
+        this.claimApprovedDate = claimApprovedDate;
     }
 
     @PreUpdate

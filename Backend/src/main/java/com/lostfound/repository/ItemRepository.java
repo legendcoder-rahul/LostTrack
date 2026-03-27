@@ -14,4 +14,11 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAllByOrderByCreatedAtDesc();
     List<Item> findByLocationContainingIgnoreCase(String location);
     List<Item> findByTitleContainingIgnoreCase(String title);
+    
+    // Claim-related queries
+    List<Item> findByUserIdAndStatusOrderByCreatedAtDesc(Long userId, ItemStatus status);
+    
+    List<Item> findByStatusAndUserIdOrderByCreatedAtDesc(ItemStatus status, Long userId);
+    
+    List<Item> findByClaimantIdAndStatusOrderByCreatedAtDesc(Long claimantId, ItemStatus status);
 }

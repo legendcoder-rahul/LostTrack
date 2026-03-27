@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router'
 import './styles/dashboard.css'
+import ClaimsBoard from '../components/ClaimsBoard'
+import itemsAPI from '../services/itemsAPI'
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview')
   const [searchQuery, setSearchQuery] = useState('')
   const [lostCount, setLostCount] = useState(0)
   const [foundCount, setFoundCount] = useState(0)
-  const [claimedItems, setClaimedItems] = useState([])
+  const [myClaimsCount, setMyClaimsCount] = useState(0)
+  const [myClaimHistory, setMyClaimHistory] = useState([])
   const [allItems, setAllItems] = useState([])
-  const [userName, setUserName] = useState('Rahul Kumar')
+  const [userName, setUserName] = useState('User')
 
   // Fetch real data from API
   useEffect(() => {
@@ -27,13 +30,18 @@ const Dashboard = () => {
       } catch (error) {
         console.error('Error fetching items:', error)
       }
+
+      // Fetch my claim history
+      try {
+        const claims = await itemsAPI.getMyClaimHistory()
+        setMyClaimHistory(claims || [])
+        setMyClaimsCount(claims?.length || 0)
+      } catch (error) {
+        console.error('Error fetching claim history:', error)
+      }
     }
 
     fetchData()
-
-    // Load claimed items from localStorage
-    const storedClaims = JSON.parse(localStorage.getItem('claims') || '[]')
-    setClaimedItems(storedClaims)
 
     // Load user name from localStorage if available
     const storedUserName = localStorage.getItem('userName')
@@ -45,7 +53,7 @@ const Dashboard = () => {
   const stats = [
     { label: 'Active Lost Reports', value: lostCount.toString(), trend: '📍 Open Cases', icon: '🔴', color: 'red' },
     { label: 'Active Found Reports', value: foundCount.toString(), trend: '📦 Available', icon: '📦', color: 'blue' },
-    { label: 'Successfully Claimed', value: claimedItems.length.toString(), trend: '✅ Returned', icon: '✅', color: 'green', highlight: true },
+    { label: 'My Claims', value: myClaimsCount.toString(), trend: '📋 In Progress', icon: '🏷️', color: 'orange' },
   ]
 
   return (
@@ -57,6 +65,8 @@ const Dashboard = () => {
           <div className="nav-section">
             {[
               { id: 'overview', label: 'Overview', icon: '📊' },
+              { id: 'claims', label: 'Claim Requests', icon: '📋' },
+              { id: 'my-claims', label: 'My Claims', icon: '🏷️' },
               { id: 'lost', label: 'Lost Items', icon: '🔴' },
               { id: 'found', label: 'Found Items', icon: '📦' },
             ].map(item => (
@@ -67,7 +77,7 @@ const Dashboard = () => {
               >
                 <span className="nav-icon">{item.icon}</span>
                 <span>{item.label}</span>
-                {item.badge && <span className="badge">8</span>}
+                {item.id === 'claims' && myClaimsCount > 0 && <span className="badge">{myClaimsCount}</span>}
               </button>
             ))}
           </div>
@@ -104,42 +114,55 @@ const Dashboard = () => {
           {activeTab === 'overview' && (
             <div className="recent-listings">
               <div className="section-header">
-                <h2>Claimed Items</h2>
+                <h2>Quick Stats</h2>
                 <Link to="/recent-items" className="view-all">View All Items</Link>
               </div>
-              {claimedItems.length > 0 ? (
+              <p>Welcome to your Lost and Found Dashboard. Use the sidebar to navigate through different sections.</p>
+            </div>
+          )}
+
+          {activeTab === 'claims' && (
+            <ClaimsBoard />
+          )}
+
+          {activeTab === 'my-claims' && (
+            <div className="recent-listings">
+              <div className="section-header">
+                <h2>My Claims History</h2>
+              </div>
+              {myClaimHistory.length > 0 ? (
                 <table className="listings-table">
                   <thead>
                     <tr>
                       <th>ITEM DETAILS</th>
                       <th>STATUS</th>
-                      <th>CLAIMED DATE</th>
-                      <th>USER CONTACT</th>
+                      <th>OWNER</th>
+                      <th>CREATED DATE</th>
                       <th></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {claimedItems.map((claim) => (
-                      <tr key={claim.itemId}>
+                    {myClaimHistory.map((claim) => (
+                      <tr key={claim.id}>
                         <td>
                           <div className="item-cell">
-                            <span className="item-icon">📦</span>
+                            <span className="item-icon">🏷️</span>
                             <div>
-                              <div className="item-name">{claim.itemTitle}</div>
-                              <div className="item-description">Claim ID: {claim.itemId}</div>
+                              <div className="item-name">{claim.title}</div>
+                              <div className="item-description">{claim.location}</div>
                             </div>
                           </div>
                         </td>
                         <td>
-                          <span className={`status-badge ${claim.itemStatus.toLowerCase()}`}>
-                            {claim.itemStatus}
+                          <span className={`status-badge ${claim.status.toLowerCase()}`}>
+                            {claim.status.replace('_', ' ')}
                           </span>
                         </td>
-                        <td className="date-cell">{claim.claimTime}</td>
                         <td className="location-cell">
-                          {claim.userEmail && <div>📧 {claim.userEmail}</div>}
-                          {claim.userPhone && <div>📱 {claim.userPhone}</div>}
+                          {claim.ownerName || 'Unknown'}<br/>
+                          <small>{claim.ownerEmail || ''}</small>
                         </td>
+                        <td className="date-cell">{new Date(claim.createdAt).toLocaleDateString()}</td>
                         <td>
                           <button className="btn-menu">⋮</button>
                         </td>
@@ -150,7 +173,7 @@ const Dashboard = () => {
               ) : (
                 <div className="empty-state">
                   <p className="empty-icon">📭</p>
-                  <p className="empty-text">No claimed items yet. Visit <Link to="/recent-items">Recent Items</Link> to claim found items.</p>
+                  <p className="empty-text">No claims yet. Visit <Link to="/recent-items">Recent Items</Link> to claim found items.</p>
                 </div>
               )}
             </div>
