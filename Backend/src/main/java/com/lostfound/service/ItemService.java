@@ -156,20 +156,24 @@ public class ItemService {
      * Changes status from FOUND to CLAIM_REQUESTED
      */
     public ItemDTO claimItem(Long itemId, Long claimantId) {
+        System.out.println("DEBUG: claimItem() called - itemId: " + itemId + ", claimantId: " + claimantId);
         Optional<Item> itemOpt = itemRepository.findById(itemId);
         if (itemOpt.isEmpty()) {
             throw new RuntimeException("Item not found");
         }
 
         Item item = itemOpt.get();
+        System.out.println("DEBUG: Found item - id: " + item.getId() + ", title: " + item.getTitle() + ", current status: " + item.getStatus() + ", owner userId: " + item.getUser().getId());
         
         // Verify item owner is not claiming their own item
         if (item.getUser().getId().equals(claimantId)) {
+            System.out.println("DEBUG: Cannot claim - user is the owner of the item");
             throw new RuntimeException("Cannot claim your own item");
         }
 
         // Verify item is in FOUND status
         if (!item.getStatus().equals(ItemStatus.FOUND)) {
+            System.out.println("DEBUG: Cannot claim - item status is not FOUND, current status: " + item.getStatus());
             throw new RuntimeException("Item is not available for claim. Current status: " + item.getStatus());
         }
 
@@ -179,6 +183,7 @@ public class ItemService {
         item.setOtpAttemptCount(0);
         
         Item updated = itemRepository.save(item);
+        System.out.println("DEBUG: Item saved successfully - new status: " + updated.getStatus() + ", claimantId: " + updated.getClaimantId());
         
         // Send notification to owner
         notificationService.sendClaimRequestNotification(
@@ -195,8 +200,11 @@ public class ItemService {
      * Returns all items with status CLAIM_REQUESTED
      */
     public List<ItemDTO> getClaimRequestsForOwner(Long ownerId) {
-        return itemRepository.findByStatusAndUserIdOrderByCreatedAtDesc(ItemStatus.CLAIM_REQUESTED, ownerId)
-                .stream()
+        System.out.println("DEBUG: ItemService.getClaimRequestsForOwner() called with ownerId: " + ownerId);
+        List<Item> items = itemRepository.findByStatusAndUserIdOrderByCreatedAtDesc(ItemStatus.CLAIM_REQUESTED, ownerId);
+        System.out.println("DEBUG: Found " + items.size() + " items with CLAIM_REQUESTED status for owner " + ownerId);
+        items.forEach(item -> System.out.println("  - Item: id=" + item.getId() + ", title=" + item.getTitle() + ", userId=" + item.getUser().getId() + ", claimantId=" + item.getClaimantId()));
+        return items.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }

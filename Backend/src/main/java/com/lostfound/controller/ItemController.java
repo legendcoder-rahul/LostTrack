@@ -132,9 +132,14 @@ public class ItemController {
                 return ResponseEntity.status(404).body(new ErrorResponse("User not found"));
             }
 
+            System.out.println("DEBUG: Fetching claims for owner ID: " + ownerId + ", email: " + userEmail);
             List<ItemDTO> claims = itemService.getClaimRequestsForOwner(ownerId);
+            System.out.println("DEBUG: Found " + claims.size() + " claim requests for owner: " + ownerId);
+            claims.forEach(c -> System.out.println("  - Item ID: " + c.getId() + ", Title: " + c.getTitle() + ", Status: " + c.getStatus() + ", Claimant ID: " + c.getClaimantId()));
             return ResponseEntity.ok(claims);
         } catch (RuntimeException e) {
+            System.out.println("DEBUG: Error fetching claims: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
         }
     }

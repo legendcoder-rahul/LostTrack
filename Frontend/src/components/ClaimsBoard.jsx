@@ -7,25 +7,36 @@ const ClaimsBoard = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [processingId, setProcessingId] = useState(null)
+  const [lastUpdated, setLastUpdated] = useState(null)
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   useEffect(() => {
     fetchClaimRequests()
-    // Refresh every 10 seconds
-    const interval = setInterval(fetchClaimRequests, 10000)
+    // Refresh every 5 seconds for faster updates
+    const interval = setInterval(fetchClaimRequests, 5000)
     return () => clearInterval(interval)
   }, [])
 
   const fetchClaimRequests = async () => {
     try {
       setError(null)
+      console.log('[ClaimsBoard] Fetching claim requests...')
       const response = await itemsAPI.getMyClaimRequests()
+      console.log('[ClaimsBoard] Received claims:', response)
       setClaims(response || [])
+      setLastUpdated(new Date())
     } catch (err) {
-      console.error('Error fetching claim requests:', err)
+      console.error('[ClaimsBoard] Error fetching claim requests:', err)
       setError(err.message)
     } finally {
       setLoading(false)
+      setIsRefreshing(false)
     }
+  }
+
+  const handleManualRefresh = () => {
+    setIsRefreshing(true)
+    fetchClaimRequests()
   }
 
   const handleApprove = async (itemId) => {
@@ -69,8 +80,22 @@ const ClaimsBoard = () => {
   return (
     <div className="claims-board">
       <div className="claims-header">
-        <h2>📋 Claim Requests</h2>
-        <p>Review and respond to items being claimed</p>
+        <div>
+          <h2>📋 Claim Requests</h2>
+          <p>Review and respond to items being claimed</p>
+          {lastUpdated && (
+            <p className="last-updated">
+              Last updated: {lastUpdated.toLocaleTimeString()}
+            </p>
+          )}
+        </div>
+        <button 
+          className="btn btn-refresh"
+          onClick={handleManualRefresh}
+          disabled={isRefreshing}
+        >
+          {isRefreshing ? '🔄 Refreshing...' : '🔄 Refresh Now'}
+        </button>
       </div>
 
       {error && (

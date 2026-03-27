@@ -255,6 +255,43 @@
   gap: 8px;
 }
 
+.status-selector {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.status-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  flex: 1;
+  min-width: 200px;
+}
+
+.status-option input[type="radio"] {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  accent-color: #667eea;
+  margin: 0;
+  padding: 0;
+}
+
+.status-label {
+  font-size: 14px;
+  color: #1a1a1a;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+[data-theme="dark"] .status-label {
+  color: #fff;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;

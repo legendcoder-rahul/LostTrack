@@ -8,6 +8,7 @@ const ReportItem = () => {
     description: '',
     date: '',
     location: '',
+    status: 'LOST',  // Add status field
     contact: '',
     photos: []
   })
@@ -91,7 +92,7 @@ const ReportItem = () => {
         title: form.title.trim(),
         description: form.description.trim(),
         location: form.location.trim(),
-        status: 'LOST',
+        status: form.status,  // Use selected status instead of hardcoded 'LOST'
         reportedDate: form.date ? new Date(form.date).toISOString() : new Date().toISOString(),
         contactInfo: form.contact.trim()
       }
@@ -205,6 +206,33 @@ const ReportItem = () => {
                 placeholder="e.g., Blue Leather Wallet"
                 required
               />
+            </div>
+
+            {/* Item Status */}
+            <div className="form-group">
+              <label className="form-label">ITEM STATUS</label>
+              <div className="status-selector">
+                <label className="status-option">
+                  <input
+                    type="radio"
+                    name="status"
+                    value="LOST"
+                    checked={form.status === 'LOST'}
+                    onChange={handleChange}
+                  />
+                  <span className="status-label">🔴 LOST - I lost this item</span>
+                </label>
+                <label className="status-option">
+                  <input
+                    type="radio"
+                    name="status"
+                    value="FOUND"
+                    checked={form.status === 'FOUND'}
+                    onChange={handleChange}
+                  />
+                  <span className="status-label">📦 FOUND - I found this item</span>
+                </label>
+              </div>
             </div>
 
             {/* Description */}

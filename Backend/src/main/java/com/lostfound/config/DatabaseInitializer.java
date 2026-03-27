@@ -20,23 +20,11 @@ public class DatabaseInitializer implements CommandLineRunner {
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement()) {
             
-            System.out.println("🔧 Resetting database...");
+            System.out.println("🔧 Initializing database (preserving existing data)...");
             
-            // Drop the entire database and recreate it
-            stmt.execute("DROP DATABASE IF EXISTS lost_found_db");
-            System.out.println("  - Dropped database");
-            
-            // Create fresh database
-            stmt.execute("CREATE DATABASE lost_found_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-            System.out.println("  - Created database");
-            
-            // Switch to the new database
-            stmt.execute("USE lost_found_db");
-            System.out.println("  - Switched to database");
-            
-            // Create users table
+            // Create users table if it doesn't exist
             stmt.execute(
-                "CREATE TABLE users (" +
+                "CREATE TABLE IF NOT EXISTS users (" +
                 "    id BIGINT AUTO_INCREMENT PRIMARY KEY," +
                 "    email VARCHAR(255) NOT NULL UNIQUE," +
                 "    password VARCHAR(255) NOT NULL," +
@@ -51,11 +39,11 @@ public class DatabaseInitializer implements CommandLineRunner {
                 "    INDEX idx_role (role)" +
                 ")"
             );
-            System.out.println("✓ Created users table");
+            System.out.println("✓ Users table ready");
 
-            // Create items table WITHOUT foreign key constraint
+            // Create items table if it doesn't exist
             stmt.execute(
-                "CREATE TABLE items (" +
+                "CREATE TABLE IF NOT EXISTS items (" +
                 "    id BIGINT AUTO_INCREMENT PRIMARY KEY," +
                 "    title VARCHAR(255) NOT NULL," +
                 "    description LONGTEXT," +
@@ -65,23 +53,35 @@ public class DatabaseInitializer implements CommandLineRunner {
                 "    reported_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP," +
                 "    contact_info VARCHAR(255) NOT NULL," +
                 "    user_id BIGINT NOT NULL," +
+                "    claimant_id BIGINT COMMENT 'ID of the person claiming the item'," +
+                "    otp VARCHAR(255) COMMENT 'Hashed OTP code'," +
+                "    otp_expiry DATETIME COMMENT 'OTP expiration timestamp'," +
+                "    otp_attempt_count INT DEFAULT 0 COMMENT 'Number of OTP verification attempts'," +
+                "    claim_approved_date DATETIME COMMENT 'When the owner approved the claim'," +
                 "    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
                 "    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP," +
                 "    INDEX idx_status (status)," +
                 "    INDEX idx_location (location)," +
                 "    INDEX idx_created_at (created_at)," +
-                "    INDEX idx_user_id (user_id)" +
+                "    INDEX idx_user_id (user_id)," +
+                "    INDEX idx_claimant_id (claimant_id)," +
+                "    INDEX idx_otp_expiry (otp_expiry)" +
                 ")"
             );
-            System.out.println("✓ Created items table");
+            System.out.println("✓ Items table ready");
 
-            // Insert sample admin user
-            stmt.execute(
-                "INSERT INTO users (id, email, password, name, phone, role, is_active) " +
-                "VALUES (1, 'admin@example.com', '$2a$10$SlVZcheynZake9upc1K9n.E.3Np3QTq.i9BrfKu4yKh.x8iHI4bK', 'Admin User', '+1234567890', 'ADMIN', 1)"
-            );
-            System.out.println("✓ Inserted admin user");
-            System.out.println("✓ Database ready!");
+            // Check if admin user already exists before inserting
+            try {
+                stmt.execute(
+                    "INSERT IGNORE INTO users (id, email, password, name, phone, role, is_active) " +
+                    "VALUES (1, 'admin@example.com', '$2a$10$SlVZcheynZake9upc1K9n.E.3Np3QTq.i9BrfKu4yKh.x8iHI4bK', 'Admin User', '+1234567890', 'ADMIN', 1)"
+                );
+                System.out.println("✓ Admin user verified");
+            } catch (Exception e) {
+                System.out.println("✓ Admin user already exists (no action needed)");
+            }
+            
+            System.out.println("✓ Database initialization complete! Your data is safe! 🎉");
 
         } catch (Exception e) {
             System.err.println("❌ Database initialization failed: " + e.getMessage());

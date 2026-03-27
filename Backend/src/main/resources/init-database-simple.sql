@@ -32,12 +32,19 @@ CREATE TABLE items (
     reported_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     contact_info VARCHAR(255) NOT NULL,
     user_id BIGINT,
+    claimant_id BIGINT COMMENT 'ID of the person claiming the item',
+    otp VARCHAR(255) COMMENT 'Hashed OTP code',
+    otp_expiry DATETIME COMMENT 'OTP expiration timestamp',
+    otp_attempt_count INT DEFAULT 0 COMMENT 'Number of OTP verification attempts',
+    claim_approved_date DATETIME COMMENT 'When the owner approved the claim',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
     INDEX idx_status (status),
     INDEX idx_location (location),
     INDEX idx_created_at (created_at),
-    INDEX idx_user_id (user_id)
+    INDEX idx_user_id (user_id),
+    INDEX idx_claimant_id (claimant_id),
+    INDEX idx_otp_expiry (otp_expiry)
 );
 
 -- Insert sample admin user
