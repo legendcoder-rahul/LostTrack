@@ -20,10 +20,10 @@ const Home = () => {
             </p>
             <div className="hero-actions">
               <Link to="/report">
-                <button className="btn btn-primary">📍 Report Lost Item</button>
+                <button className="btn btn-primary">Report Lost Item</button>
               </Link>
               <Link to="/found">
-                <button className="btn btn-secondary">📦 Report Found Item</button>
+                <button className="btn btn-secondary">Report Found Item</button>
               </Link>
             </div>
           </div>

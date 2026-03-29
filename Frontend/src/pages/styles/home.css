@@ -89,11 +89,14 @@
   font-weight: 600;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  background: linear-gradient(135deg, #363841 0%, #010102 100%);
   color: #fff;
+  
 }
 
 .btn-primary:hover {
@@ -196,6 +199,10 @@
   font-size: 13px;
   color: #999;
   margin: 0;
+}
+
+[data-theme="light"] .card-title {
+  color: #666;
 }
 
 .card-detail {
@@ -315,10 +322,19 @@
   margin-bottom: 8px;
 }
 
+[data-theme="light"] .stat-number {
+  color: #000;
+  
+}
+
 .stat-label {
   font-size: 16px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="light"] .stat-label {
+  color: rgba(0, 0, 0, 1);
 }
 
 /* ============ DESIGNED FOR EVERY SCALE SECTION ============ */
@@ -598,11 +614,11 @@
   }
 
   .hero-title {
-    font-size: 28px;
+    font-size: 36px;
   }
 
   .hero-subtitle {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .hero-tag {
@@ -624,11 +640,11 @@
   }
 
   .section-title {
-    font-size: 28px;
+    font-size: 32px;
   }
 
   .section-subtitle {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .features-grid {
@@ -684,7 +700,7 @@
   }
 
   .hero-title {
-    font-size: 22px;
+    font-size: 40px;
   }
 
   .hero-subtitle {
@@ -763,6 +779,7 @@
 
   .stat-label {
     font-size: 12px;
+
   }
 
   .how-losttrack-works,
