@@ -9,13 +9,11 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:8080',
         changeOrigin: true,
-        // Don't rewrite - keep /api path intact
       },
     },
   },
   build: {
     outDir: 'dist',
-    sourcemap: false,
-    minify: 'terser',
+    minify: false, // Disable minification to avoid terser dependency
   },
 })
