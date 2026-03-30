@@ -27,7 +27,7 @@ public class OTPTimeoutScheduler {
      * Check for expired OTPs every 5 minutes
      * If OTP is expired, reset the claim and mark item as FOUND
      */
-    @Scheduled(fixedRate = 300000) // 5 minutes
+    // @Scheduled(fixedRate = 300000) // 5 minutes - DISABLED for Render deployment
     public void handleExpiredOTPs() {
         try {
             logger.info("Running OTP expiry check...");
