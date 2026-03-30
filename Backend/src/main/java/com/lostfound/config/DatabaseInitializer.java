@@ -84,9 +84,11 @@ public class DatabaseInitializer implements CommandLineRunner {
             System.out.println("✓ Database initialization complete! Your data is safe! 🎉");
 
         } catch (Exception e) {
-            System.err.println("❌ Database initialization failed: " + e.getMessage());
+            System.err.println("⚠️  Database initialization warning: " + e.getMessage());
+            System.err.println("ℹ️  Application will continue but database may not be initialized");
             e.printStackTrace();
-            throw new RuntimeException("Database initialization failed", e);
+            // Don't throw exception - let app start even if DB is unavailable
+            // This allows graceful degradation on platforms like Render
         }
     }
 }

@@ -67,7 +67,7 @@ public class OTPTimeoutScheduler {
      * Check for 24-hour timeout on claim approvals
      * If claim was approved more than 24 hours ago and not verified, reset it
      */
-    @Scheduled(fixedRate = 600000) // 10 minutes
+    // @Scheduled(fixedRate = 600000) // 10 minutes - DISABLED for Render deployment
     public void handleClaimTimeout() {
         try {
             logger.info("Running claim approval timeout check...");
