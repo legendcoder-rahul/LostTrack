@@ -20,7 +20,7 @@
 .found-header h1 {
   font-size: 42px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #001011;
   margin-bottom: 16px;
 }
 
@@ -30,13 +30,13 @@
 
 .found-header p {
   font-size: 16px;
-  color: #666;
+  color: #757780;
   line-height: 1.6;
   max-width: 600px;
 }
 
 [data-theme="dark"] .found-header p {
-  color: #999;
+  color: #757780;
 }
 
 /* ============ FOUND CONTENT LAYOUT ============ */
@@ -64,7 +64,7 @@
 .photo-label {
   font-size: 14px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #001011;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -95,8 +95,8 @@
 }
 
 .upload-area:hover {
-  border-color: #667eea;
-  background: #f8f7ff;
+  border-color: #6ccff6;
+  background: #e0f7ff;
 }
 
 [data-theme="dark"] .upload-area:hover {
@@ -104,9 +104,9 @@
 }
 
 .upload-area.active {
-  border-color: #667eea;
-  background: #f3f0ff;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #6ccff6;
+  background: #e0f7ff;
+  box-shadow: 0 0 0 3px rgba(108, 207, 246, 0.1);
 }
 
 [data-theme="dark"] .upload-area.active {
@@ -133,7 +133,7 @@
 .upload-text {
   font-size: 16px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #001011;
   margin: 0 0 4px 0;
 }
 
@@ -143,7 +143,7 @@
 
 .upload-hint {
   font-size: 13px;
-  color: #999;
+  color: #757780;
   margin: 0;
 }
 
@@ -188,8 +188,8 @@
 
 /* ============ CUSTODIAN TIP ============ */
 .custodian-tip {
-  background: linear-gradient(135deg, #e8eaf6 0%, #f3e5f5 100%);
-  border-left: 4px solid #667eea;
+  background: linear-gradient(135deg, #d9f1ff 0%, #ecf4ff 100%);
+  border-left: 4px solid #6ccff6;
   border-radius: 8px;
   padding: 20px;
   display: flex;
@@ -197,8 +197,8 @@
 }
 
 [data-theme="dark"] .custodian-tip {
-  background: linear-gradient(135deg, #2a2a3e 0%, #3a2a4e 100%);
-  border-left-color: #667eea;
+  background: linear-gradient(135deg, #1a3a4e 0%, #1f3d52 100%);
+  border-left-color: #6ccff6;
 }
 
 .tip-icon {
@@ -209,7 +209,7 @@
 .custodian-tip h3 {
   font-size: 16px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #001011;
   margin: 0 0 6px 0;
 }
 
@@ -219,13 +219,13 @@
 
 .custodian-tip p {
   font-size: 14px;
-  color: #666;
+  color: #757780;
   margin: 0;
   line-height: 1.5;
 }
 
 [data-theme="dark"] .custodian-tip p {
-  color: #999;
+  color: #757780;
 }
 
 /* ============ RIGHT SECTION - FORM ============ */

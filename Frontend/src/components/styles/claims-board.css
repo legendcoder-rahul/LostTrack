@@ -35,8 +35,8 @@
 }
 
 .btn-refresh {
-  background-color: #2196f3;
-  color: white;
+  background-color: #6ccff6;
+  color: #001011;
   padding: 10px 16px;
   border: none;
   border-radius: 6px;
@@ -50,8 +50,8 @@
 }
 
 .btn-refresh:hover:not(:disabled) {
-  background-color: #1976d2;
-  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+  background-color: #5bb8e0;
+  box-shadow: 0 2px 8px rgba(108, 207, 246, 0.3);
 }
 
 .btn-refresh:disabled {
@@ -60,17 +60,17 @@
 }
 
 [data-theme="dark"] .btn-refresh {
-  background-color: #1976d2;
+  background-color: #6ccff6;
 }
 
 [data-theme="dark"] .btn-refresh:hover:not(:disabled) {
-  background-color: #1565c0;
+  background-color: #5bb8e0;
 }
 
 .claims-header h2 {
   margin: 0 0 8px 0;
   font-size: 24px;
-  color: #333;
+  color: #001011;
   flex: 1;
 }
 
@@ -80,7 +80,7 @@
 
 .claims-header p {
   margin: 0;
-  color: #666;
+  color: #757780;
   font-size: 14px;
 }
 
@@ -132,7 +132,7 @@
 .empty-state h3 {
   margin: 16px 0 8px 0;
   font-size: 20px;
-  color: #333;
+  color: #001011;
 }
 
 [data-theme="dark"] .empty-state h3 {
@@ -141,12 +141,12 @@
 
 .empty-state p {
   margin: 0;
-  color: #999;
+  color: #757780;
   font-size: 14px;
 }
 
 [data-theme="dark"] .empty-state p {
-  color: #aaa;
+  color: #757780;
 }
 
 .claims-list {

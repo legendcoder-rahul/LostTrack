@@ -6,12 +6,18 @@
 }
 
 :root {
-  --primary-color: #667eea;
-  --secondary-color: #764ba2;
-  --text-dark: #1a1a1a;
-  --text-light: #666;
-  --bg-light: #ffffff;
-  --border-color: #e0e0e0;
+  --frozen-lake: #6ccff6;
+  --ink-black: #001011;
+  --grey: #757780;
+  --porcelain: #fffffb;
+  --yellow-green: #98ce00;
+  
+  --primary-color: #6ccff6;
+  --secondary-color: #98ce00;
+  --text-dark: #001011;
+  --text-light: #757780;
+  --bg-light: #fffffb;
+  --border-color: #757780;
 }
 
 [data-theme="dark"] {

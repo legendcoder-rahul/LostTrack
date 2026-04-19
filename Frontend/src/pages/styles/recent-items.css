@@ -22,7 +22,7 @@
 .recent-header h1 {
   font-size: 48px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #001011;
   margin-bottom: 16px;
   line-height: 1.2;
 }
@@ -33,12 +33,12 @@
 
 .recent-header p {
   font-size: 16px;
-  color: #666;
+  color: #757780;
   line-height: 1.6;
 }
 
 [data-theme="dark"] .recent-header p {
-  color: #999;
+  color: #757780;
 }
 
 /* ============ FILTERS ============ */
@@ -53,8 +53,8 @@
 .filter-btn {
   padding: 10px 24px;
   background: #fff;
-  color: #666;
-  border: 2px solid #d0c9e6;
+  color: #757780;
+  border: 2px solid #757780;
   border-radius: 24px;
   font-size: 14px;
   font-weight: 600;
@@ -64,20 +64,20 @@
 
 [data-theme="dark"] .filter-btn {
   background: #2a2a2a;
-  color: #999;
-  border-color: #3a3a4e;
+  color: #757780;
+  border-color: #757780;
 }
 
 .filter-btn:hover {
-  border-color: #667eea;
-  color: #667eea;
+  border-color: #6ccff6;
+  color: #6ccff6;
 }
 
 .filter-btn.active {
-  background: #667eea;
-  color: #fff;
-  border-color: #667eea;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  background: #6ccff6;
+  color: #001011;
+  border-color: #6ccff6;
+  box-shadow: 0 4px 12px rgba(108, 207, 246, 0.4);
 }
 
 /* ============ ITEMS CONTAINER ============ */
@@ -90,28 +90,28 @@
 .no-items {
   text-align: center;
   font-size: 16px;
-  color: #666;
+  color: #757780;
   padding: 60px 20px;
 }
 
 [data-theme="dark"] .loading,
 [data-theme="dark"] .no-items {
-  color: #999;
+  color: #757780;
 }
 
 /* ============ SECTION TITLE ============ */
 .section-title {
   font-size: 24px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #001011;
   margin: 40px 0 24px 0;
   padding-left: 12px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #6ccff6;
 }
 
 [data-theme="dark"] .section-title {
   color: #fff;
-  border-left-color: #4166d9;
+  border-left-color: #6ccff6;
 }
 
 /* ============ ITEMS GRID ============ */
@@ -138,7 +138,7 @@
 
 .item-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 12px 24px rgba(102, 126, 234, 0.2);
+  box-shadow: 0 12px 24px rgba(108, 207, 246, 0.2);
 }
 
 /* ============ ITEM IMAGE ============ */

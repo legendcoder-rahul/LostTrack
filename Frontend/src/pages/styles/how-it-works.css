@@ -21,7 +21,7 @@
 .how-header h1 {
   font-size: 56px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #001011;
   margin-bottom: 20px;
   line-height: 1.2;
 }
@@ -32,14 +32,14 @@
 
 .how-header p {
   font-size: 18px;
-  color: #666;
+  color: #757780;
   line-height: 1.6;
   max-width: 700px;
   margin: 0 auto;
 }
 
 [data-theme="dark"] .how-header p {
-  color: #999;
+  color: #757780;
 }
 
 /* ============ JOURNEY SECTIONS ============ */
@@ -62,12 +62,12 @@
 .section-label {
   font-size: 12px;
   font-weight: 700;
-  color: #667eea;
+  color: #6ccff6;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 12px;
   display: inline-block;
-  background: rgba(102, 126, 234, 0.1);
+  background: rgba(108, 207, 246, 0.1);
   padding: 6px 12px;
   border-radius: 20px;
 }
@@ -75,7 +75,7 @@
 .journey-section h2 {
   font-size: 42px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #001011;
   margin-bottom: 12px;
 }
 
@@ -85,13 +85,13 @@
 
 .section-description {
   font-size: 16px;
-  color: #666;
+  color: #757780;
   margin-bottom: 48px;
   max-width: 600px;
 }
 
 [data-theme="dark"] .section-description {
-  color: #999;
+  color: #757780;
 }
 
 /* ============ STEPS GRID ============ */
@@ -118,8 +118,8 @@
 
 .step-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 12px 24px rgba(102, 126, 234, 0.2);
-  border-color: #667eea;
+  box-shadow: 0 12px 24px rgba(108, 207, 246, 0.2);
+  border-color: #6ccff6;
 }
 
 .step-icon {
@@ -131,7 +131,7 @@
 .step-card h3 {
   font-size: 20px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #001011;
   margin-bottom: 12px;
 }
 
@@ -141,13 +141,13 @@
 
 .step-card p {
   font-size: 15px;
-  color: #666;
+  color: #757780;
   line-height: 1.6;
   margin: 0;
 }
 
 [data-theme="dark"] .step-card p {
-  color: #999;
+  color: #757780;
 }
 
 /* ============ FOUND SECTION ============ */
@@ -206,38 +206,38 @@
 }
 
 .trust-card.identity {
-  background: linear-gradient(135deg, #e8eaf6 0%, #f3e5f5 100%);
+  background: linear-gradient(135deg, #d9f1ff 0%, #ecf4ff 100%);
 }
 
 [data-theme="dark"] .trust-card.identity {
-  background: linear-gradient(135deg, #2a2a3e 0%, #3a2a4e 100%);
+  background: linear-gradient(135deg, #1a3a4e 0%, #1f3d52 100%);
 }
 
 .trust-card.secure-messaging {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: #fff;
+  background: linear-gradient(135deg, #6ccff6 0%, #98ce00 100%);
+  color: #001011;
   grid-column: span 1;
   grid-row: span 1;
 }
 
 [data-theme="dark"] .trust-card.secure-messaging {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6ccff6 0%, #98ce00 100%);
 }
 
 .trust-card.verified {
-  background: linear-gradient(135deg, #e8eaf6 0%, #f3e5f5 100%);
+  background: linear-gradient(135deg, #d9f1ff 0%, #ecf4ff 100%);
 }
 
 [data-theme="dark"] .trust-card.verified {
-  background: linear-gradient(135deg, #2a2a3e 0%, #3a2a4e 100%);
+  background: linear-gradient(135deg, #1a3a4e 0%, #1f3d52 100%);
 }
 
 .trust-card.privacy {
-  background: linear-gradient(135deg, #f0ecff 0%, #ede7f6 100%);
+  background: linear-gradient(135deg, #e0f7ff 0%, #d9f1ff 100%);
 }
 
 [data-theme="dark"] .trust-card.privacy {
-  background: linear-gradient(135deg, #2a2a3e 0%, #3a2a4e 100%);
+  background: linear-gradient(135deg, #1a3a4e 0%, #1f3d52 100%);
 }
 
 .trust-icon {
@@ -250,11 +250,11 @@
   font-size: 20px;
   font-weight: 700;
   margin-bottom: 12px;
-  color: #1a1a1a;
+  color: #001011;
 }
 
 .trust-card.secure-messaging h3 {
-  color: #fff;
+  color: #001011;
 }
 
 [data-theme="dark"] .trust-card h3 {
@@ -263,28 +263,28 @@
 
 .trust-card p {
   font-size: 15px;
-  color: #666;
+  color: #757780;
   line-height: 1.6;
   margin: 0;
 }
 
 .trust-card.secure-messaging p {
-  color: rgba(255, 255, 255, 0.95);
+  color: #001011;
 }
 
 [data-theme="dark"] .trust-card p {
-  color: #999;
+  color: #757780;
 }
 
 .trust-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 12px 24px rgba(102, 126, 234, 0.15);
+  box-shadow: 0 12px 24px rgba(108, 207, 246, 0.15);
 }
 
 /* ============ CTA SECTION ============ */
 .cta-reunion {
   padding: 80px 40px;
-  background: linear-gradient(135deg, #0052cc 0%, #0039a6 100%);
+  background: linear-gradient(135deg, #6ccff6 0%, #5bb8e0 100%);
   text-align: center;
   margin: 0 auto;
 }

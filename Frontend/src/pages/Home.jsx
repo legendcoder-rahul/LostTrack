@@ -13,7 +13,8 @@ const Home = () => {
             <p className="hero-tag">🔍 TRACKING LOST FOUND ITEMS</p>
             <h1 className="hero-title">
               Reconnecting You<br />
-              <span className="highlight">with Your<br />Belongings.</span>
+              <span className="highlight-cyan">with Your</span><br />
+              <span className="highlight-yellow">Belongings.</span>
             </h1>
             <p className="hero-subtitle">
               The ultimate lost and found management system designed for businesses, venues, and communities. Simple, transparent, and built on trust.

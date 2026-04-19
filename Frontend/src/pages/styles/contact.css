@@ -31,7 +31,7 @@
 }
 
 .contact-hero .highlight {
-  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  background: linear-gradient(135deg, #6ccff6 0%, #98ce00 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -128,22 +128,22 @@
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #ff6b35;
+  border-color: #6ccff6;
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+  box-shadow: 0 0 0 3px rgba(108, 207, 246, 0.1);
 }
 
 [data-theme="dark"] .form-group input:focus,
 [data-theme="dark"] .form-group textarea:focus,
 [data-theme="dark"] .form-group select:focus {
   background: #242424;
-  border-color: #ff6b35;
+  border-color: #6ccff6;
 }
 
 .form-select {
   cursor: pointer;
   appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff6b35' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236ccff6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 20px;
@@ -152,8 +152,8 @@
 
 .btn-submit {
   padding: 14px 24px;
-  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-  color: #fff;
+  background: linear-gradient(135deg, #6ccff6 0%, #5bb8e0 100%);
+  color: #001011;
   border: none;
   border-radius: 8px;
   font-size: 16px;
@@ -162,13 +162,13 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+  box-shadow: 0 4px 12px rgba(108, 207, 246, 0.3);
   margin-top: 8px;
 }
 
 .btn-submit:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
+  box-shadow: 0 8px 20px rgba(108, 207, 246, 0.4);
 }
 
 .btn-submit:active {
@@ -184,16 +184,16 @@
 
 /* Direct Support */
 .direct-support {
-  background: linear-gradient(135deg, #fff3e0 0%, #ffe8d6 100%);
+  background: linear-gradient(135deg, #e0f7ff 0%, #d9f1ff 100%);
   padding: 32px 24px;
   border-radius: 12px;
-  border-left: 4px solid #ff6b35;
+  border-left: 4px solid #6ccff6;
   transition: all 0.3s ease;
 }
 
 [data-theme="dark"] .direct-support {
-  background: linear-gradient(135deg, #3d2817 0%, #2d1f0f 100%);
-  border-left-color: #ff6b35;
+  background: linear-gradient(135deg, #1a3a4e 0%, #0f2730 100%);
+  border-left-color: #6ccff6;
 }
 
 .direct-support h3 {
@@ -233,21 +233,21 @@
 }
 
 .support-icon-box.email {
-  background: rgba(255, 107, 53, 0.2);
+  background: rgba(108, 207, 246, 0.2);
 }
 
 .support-icon-box.phone {
-  background: rgba(255, 107, 53, 0.2);
+  background: rgba(108, 207, 246, 0.2);
 }
 
 .support-icon-box.location {
-  background: rgba(255, 107, 53, 0.2);
+  background: rgba(108, 207, 246, 0.2);
 }
 
 .support-label {
   font-size: 11px;
   font-weight: 700;
-  color: #ff6b35;
+  color: #6ccff6;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 4px;
@@ -262,7 +262,7 @@
 }
 
 .support-link:hover {
-  color: #ff6b35;
+  color: #6ccff6;
 }
 
 /* Map Container */
@@ -361,7 +361,7 @@
 }
 
 .faq-item.active {
-  border-color: #ff6b35;
+  border-color: #6ccff6;
 }
 
 .faq-question {
@@ -381,18 +381,18 @@
 }
 
 .faq-question:hover {
-  background: rgba(255, 107, 53, 0.05);
-  color: #ff6b35;
+  background: rgba(108, 207, 246, 0.05);
+  color: #6ccff6;
 }
 
 [data-theme="dark"] .faq-question:hover {
-  background: rgba(255, 107, 53, 0.1);
+  background: rgba(108, 207, 246, 0.1);
 }
 
 .faq-icon {
   font-size: 12px;
   transition: transform 0.3s ease;
-  color: #ff6b35;
+  color: #6ccff6;
 }
 
 .faq-icon.open {

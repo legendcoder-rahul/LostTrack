@@ -54,7 +54,7 @@
 .modal-header h2 {
   margin: 0;
   font-size: 24px;
-  color: #333;
+  color: #001011;
 }
 
 [data-theme="dark"] .modal-header h2 {
@@ -117,7 +117,7 @@
 .item-details h3 {
   margin: 0 0 8px 0;
   font-size: 18px;
-  color: #333;
+  color: #001011;
 }
 
 [data-theme="dark"] .item-details h3 {
@@ -126,7 +126,7 @@
 
 .item-location {
   margin: 8px 0;
-  color: #666;
+  color: #757780;
   font-size: 14px;
 }
 
@@ -141,8 +141,8 @@
 
 .status-badge {
   display: inline-block;
-  background-color: #e3f2fd;
-  color: #1976d2;
+  background-color: #e0f7ff;
+  color: #6ccff6;
   padding: 4px 12px;
   border-radius: 12px;
   font-size: 12px;
@@ -151,26 +151,26 @@
 
 [data-theme="dark"] .status-badge {
   background-color: #1a3a4a;
-  color: #4a9eff;
+  color: #6ccff6;
 }
 
 .claim-info {
   margin-bottom: 24px;
   padding: 16px;
-  background-color: #f0f8ff;
-  border-left: 4px solid #1976d2;
+  background-color: #e0f7ff;
+  border-left: 4px solid #6ccff6;
   border-radius: 4px;
 }
 
 [data-theme="dark"] .claim-info {
-  background-color: #1a2a3a;
-  border-left-color: #4a9eff;
+  background-color: #1a3a4a;
+  border-left-color: #6ccff6;
 }
 
 .claim-info h4 {
   margin: 0 0 12px 0;
   font-size: 16px;
-  color: #333;
+  color: #001011;
 }
 
 [data-theme="dark"] .claim-info h4 {
@@ -180,12 +180,12 @@
 .claim-info ul {
   margin: 0;
   padding-left: 20px;
-  color: #555;
+  color: #757780;
   font-size: 14px;
 }
 
 [data-theme="dark"] .claim-info ul {
-  color: #aaa;
+  color: #757780;
 }
 
 .claim-info li {
@@ -220,11 +220,11 @@
 .claim-confirmation p {
   margin: 0 0 12px 0;
   font-size: 14px;
-  color: #666;
+  color: #757780;
 }
 
 [data-theme="dark"] .claim-confirmation p {
-  color: #aaa;
+  color: #757780;
 }
 
 .confirmation-checkbox {
@@ -243,12 +243,12 @@
 .confirmation-checkbox label {
   cursor: pointer;
   font-size: 14px;
-  color: #555;
+  color: #757780;
   line-height: 1.4;
 }
 
 [data-theme="dark"] .confirmation-checkbox label {
-  color: #aaa;
+  color: #757780;
 }
 
 .modal-footer {
@@ -276,13 +276,13 @@
 }
 
 .btn-primary {
-  background-color: #1976d2;
-  color: white;
+  background-color: #6ccff6;
+  color: #001011;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: #1565c0;
-  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+  background-color: #5bb8e0;
+  box-shadow: 0 2px 8px rgba(108, 207, 246, 0.3);
 }
 
 .btn-primary:disabled {

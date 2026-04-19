@@ -6,20 +6,20 @@
 .otp-info {
   margin-bottom: 24px;
   padding: 16px;
-  background-color: #f0f8ff;
-  border-left: 4px solid #1976d2;
+  background-color: #e0f7ff;
+  border-left: 4px solid #6ccff6;
   border-radius: 4px;
 }
 
 [data-theme="dark"] .otp-info {
-  background-color: #1a2a3a;
-  border-left-color: #4a9eff;
+  background-color: #1a3a4a;
+  border-left-color: #6ccff6;
 }
 
 .otp-info h3 {
   margin: 0 0 8px 0;
   font-size: 18px;
-  color: #333;
+  color: #001011;
 }
 
 [data-theme="dark"] .otp-info h3 {
@@ -29,12 +29,12 @@
 .otp-description {
   margin: 0;
   font-size: 14px;
-  color: #555;
+  color: #757780;
   line-height: 1.5;
 }
 
 [data-theme="dark"] .otp-description {
-  color: #aaa;
+  color: #757780;
 }
 
 .otp-timer {
@@ -45,16 +45,16 @@
 .timer-label {
   display: inline-block;
   padding: 8px 16px;
-  background-color: #e8f5e9;
-  color: #2e7d32;
+  background-color: #e0f7ff;
+  color: #6ccff6;
   border-radius: 20px;
   font-size: 14px;
   font-weight: 500;
 }
 
 [data-theme="dark"] .timer-label {
-  background-color: #1a3a2a;
-  color: #4caf50;
+  background-color: #1a3a4a;
+  color: #6ccff6;
 }
 
 .timer-label.expired {
@@ -97,13 +97,13 @@
 
 .otp-input:focus {
   outline: none;
-  border-color: #1976d2;
-  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+  border-color: #6ccff6;
+  box-shadow: 0 0 0 3px rgba(108, 207, 246, 0.1);
 }
 
 [data-theme="dark"] .otp-input:focus {
-  border-color: #4a9eff;
-  box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.1);
+  border-color: #6ccff6;
+  box-shadow: 0 0 0 3px rgba(108, 207, 246, 0.1);
 }
 
 .otp-input:disabled {
@@ -121,31 +121,31 @@
   text-align: center;
   margin-bottom: 24px;
   padding: 12px;
-  background-color: #fff3e0;
+  background-color: #e0f7ff;
   border-radius: 4px;
 }
 
 [data-theme="dark"] .otp-attempts {
-  background-color: #3a2a1a;
+  background-color: #1a3a4a;
 }
 
 .otp-attempts p {
   margin: 0;
   font-size: 14px;
-  color: #666;
+  color: #757780;
 }
 
 [data-theme="dark"] .otp-attempts p {
-  color: #aaa;
+  color: #757780;
 }
 
 .otp-attempts span {
   font-weight: 600;
-  color: #f57c00;
+  color: #6ccff6;
 }
 
 [data-theme="dark"] .otp-attempts span {
-  color: #ff9800;
+  color: #6ccff6;
 }
 
 [data-theme="dark"] .otp-notes {

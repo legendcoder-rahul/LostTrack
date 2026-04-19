@@ -1,15 +1,15 @@
 /* Footer Styles */
 .footer {
-  background-color: #2c3e50;
+  background-color: #001011;
   color: #fff;
   padding: 60px 40px 20px;
   margin-top: 80px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(108, 207, 246, 0.2);
 }
 
 [data-theme="dark"] .footer {
-  background-color: #0f0f0f;
-  border-top-color: rgba(255, 255, 255, 0.05);
+  background-color: #000;
+  border-top-color: rgba(108, 207, 246, 0.1);
 }
 
 .footer-content {
@@ -44,7 +44,7 @@
 }
 
 .footer-logo-text {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6ccff6 0%, #98ce00 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -74,7 +74,7 @@
 }
 
 .footer-links li a:hover {
-  color: #667eea;
+  color: #6ccff6;
   padding-left: 8px;
 }
 
@@ -86,12 +86,12 @@
 .social-icon {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6ccff6 0%, #98ce00 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: #001011;
   text-decoration: none;
   font-weight: 600;
   font-size: 18px;
